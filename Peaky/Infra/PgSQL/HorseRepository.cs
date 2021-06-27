@@ -9,23 +9,26 @@ namespace Peaky.Infra.PgSQL
     public class HorseRepository
     {
 
-        public async void TestQuery() {
+        public async Task<bool> TestQuery() {
 
-            var connString = "";
+            using (var conn = PgDbConnection.getConnection())
+            {
 
-            await using var conn = new NpgsqlConnection(connString);
+                await conn.OpenAsync();
 
-            await conn.OpenAsync();
+                await using (var cmd = new NpgsqlCommand("SELECT * FROM horse", conn))
+                {
 
-            await using (var cmd = new NpgsqlCommand("SELECT * FROM horse", conn)) {
+                    var res = await cmd.ExecuteReaderAsync();
+                    res.Read();
+                    res.Read();
+                    var aaa = res["name"];
+                    Console.WriteLine(res);
 
-                var res = await cmd.ExecuteReaderAsync();
-                res.Read();
-                res.Read();
-                var aaa = res["name"];
-                Console.WriteLine(res);
-            
+                }
             }
+
+            return true;
 
         }
 

@@ -18,7 +18,7 @@ namespace Peaky.Controllers
 
             HorseRepository hr1 = new HorseRepository();
 
-            hr1.TestQuery();
+            await hr1.TestQuery();
 
             return Ok("Hello");
 
