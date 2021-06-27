@@ -8,7 +8,7 @@ namespace Peaky.Infra.PgSQL
 {
     public class PgDbConnection
     {
-
+        //TODO REFACTOR
         public static NpgsqlConnection getConnection() {
 
             var connString = "";

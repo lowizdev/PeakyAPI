@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Peaky.Models.Interfaces;
 using Peaky.Infra.PgSQL;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,21 @@ namespace Peaky.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> Get() {
+        public async Task<IActionResult> GetAll() {
 
             HorseRepository hr1 = new HorseRepository();
 
             await hr1.TestQuery();
+
+            return Ok("Hello");
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id, [FromServices] IHorseRepository repository)
+        {
+
+            var result = await repository.GetOneById(id);
 
             return Ok("Hello");
 
