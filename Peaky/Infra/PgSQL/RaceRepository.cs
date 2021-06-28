@@ -1,33 +1,31 @@
-﻿using Peaky.Models.Interfaces;
+﻿using Npgsql;
+using Peaky.Factories;
 using Peaky.Models;
+using Peaky.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Npgsql;
-using Peaky.Factories;
 
 namespace Peaky.Infra.PgSQL
 {
-    public class UserRepository : IUserRepository
+    public class RaceRepository : IRaceRepository
     {
         public Task<bool> DeleteOneById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetAll()
+        public Task<List<Race>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<User> GetOneById(int id)
+        public async Task<Race> GetOneById(int id)
         {
-            //throw new NotImplementedException();
+            String sql = "SELECT * FROM race WHERE id = @id";
 
-            var sql = "SELECT * FROM user WHERE id = @id";
-
-            NpgsqlDataReader result;
+            NpgsqlDataReader result = null;
 
             using (var conn = PgDbConnection.getConnection()) {
 
@@ -42,25 +40,25 @@ namespace Peaky.Infra.PgSQL
 
                     if (result.Read()) {
 
-                        GenericDOFactoryADO<User> userFactory = new GenericDOFactoryADO<User>();
+                        GenericDOFactoryADO<Race> raceFactory = new GenericDOFactoryADO<Race>();
+                        var resultRace = raceFactory.Make(result);
 
-                        var resultUser = userFactory.Make(result);
-
-                        return resultUser;
+                        return resultRace;
 
                     }
 
                 }
+
             }
 
-            return null;
 
+            return null;
         }
 
-        public async Task<int> InsertOne(User element)
+        public async Task<int> InsertOne(Race element)
         {
 
-            String sql = "INSERT INTO user (name, email, password) VALUES (@name, @email, @password)";
+            String sql = "INSERT INTO race ( race_date, description ) VALUES ( @race_date, @description )";
 
             int result = 0;
 
@@ -71,16 +69,10 @@ namespace Peaky.Infra.PgSQL
                     await conn.OpenAsync();
 
                     command.CommandText = sql;
-                    command.Parameters.AddWithValue("name", element.name);
-                    command.Parameters.AddWithValue("email", element.password);
-                    command.Parameters.AddWithValue("password", element.password);
-
+                    command.Parameters.AddWithValue("race_date", element.race_date);
+                    command.Parameters.AddWithValue("description", element.description);
 
                     result = await command.ExecuteNonQueryAsync();
-
-                    //return result;
-
-                
                 }
 
             }

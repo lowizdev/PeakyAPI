@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Peaky.Models;
 
 namespace Peaky.Controllers
 {
@@ -15,13 +16,15 @@ namespace Peaky.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() {
+        public async Task<IActionResult> GetAll([FromServices] IHorseRepository repository) {
 
-            HorseRepository hr1 = new HorseRepository();
+            /*HorseRepository hr1 = new HorseRepository();
 
-            await hr1.TestQuery();
+            await hr1.TestQuery();*/
 
-            return Ok("Hello");
+            List<Horse> horses = await repository.GetAll();
+
+            return Ok(horses);
 
         }
 

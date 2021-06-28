@@ -12,9 +12,48 @@ namespace Peaky.Infra.PgSQL
     public class HorseRepository: IHorseRepository
     {
 
-        public Task<List<Horse>> GetAll()
+        public async Task<List<Horse>> GetAll()
         {
-            throw new NotImplementedException();
+            //TODO: PAGINATE
+            String sql = "SELECT * FROM horse";
+
+            NpgsqlDataReader result;
+
+            using (var conn = PgDbConnection.getConnection())
+            {
+
+                await conn.OpenAsync();
+
+                await using (var command = conn.CreateCommand())
+                {
+
+                    command.CommandText = sql;
+
+                    result = await command.ExecuteReaderAsync();
+
+                    if (result.HasRows)
+                    {
+
+                        GenericDOFactoryADO<Horse> horseFactory = new GenericDOFactoryADO<Horse>();
+                        List<Horse> resultList = new List<Horse>();
+
+                        while (result.Read()) {
+
+                            Horse currentHorse = horseFactory.Make(result);
+
+                            resultList.Add(currentHorse);
+                        }
+
+                        return resultList;
+
+                    }
+
+                }
+
+            }
+
+            return null;
+
         }
 
         public async Task<Horse> GetOneById(int id)
