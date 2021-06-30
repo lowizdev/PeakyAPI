@@ -77,8 +77,8 @@ namespace Peaky.Infra.PgSQL
                     if (result.Read())
                     {
 
-                        var aaa = result["name"];
-                        Console.WriteLine(result);
+                        //var aaa = result["name"];
+                        //Console.WriteLine(result);
 
                         /*var bbb = new Horse();
                         var ccc = bbb.GetType().GetProperties()[0].Name;*/

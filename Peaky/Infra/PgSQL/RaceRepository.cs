@@ -79,5 +79,41 @@ namespace Peaky.Infra.PgSQL
 
             return result;
         }
+
+        public async Task<Race> AddHorse(Race race, Horse horse) { //TODO: REFACTOR
+
+            String sql = "INSERT INTO racehorse (race_id, horse_id) VALUES (@race_id, @horse_id)";
+
+            int result = 0;
+
+            using (var conn = PgDbConnection.getConnection()) {
+
+                await using (var command = conn.CreateCommand()) {
+
+                    await conn.OpenAsync();
+
+                    command.CommandText = sql;
+                    command.Parameters.AddWithValue("race_id", race.id);
+                    command.Parameters.AddWithValue("horse_id", horse.id);
+
+                    result = command.ExecuteNonQuery();
+
+                }
+
+            }
+
+
+            return race;
+
+        }
+
+        public Task<int> GetHorseQuantity(Race race) {
+
+
+            String sql = "SELECT COUNT(*) FROM race AS r INNER JOIN horse AS h WHERE r.id = @id";
+
+            return null;
+
+        }
     }
 }

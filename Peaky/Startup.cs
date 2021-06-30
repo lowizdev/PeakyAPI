@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Peaky.Infra.Security;
+using Peaky.Services;
 
 namespace Peaky
 {
@@ -58,6 +60,12 @@ namespace Peaky
             });
 
             services.AddTransient<IHorseRepository, HorseRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRaceRepository, RaceRepository>();
+
+            services.AddSingleton<IHashing, BCryptHashing>();
+
+            services.AddTransient<IUserService, UserService>();
 
             services.AddSwaggerGen(c =>
             {

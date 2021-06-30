@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Peaky.Models;
+using Peaky.Models.DTOs;
 
 namespace Peaky.Controllers
 {
@@ -22,6 +23,8 @@ namespace Peaky.Controllers
 
             await hr1.TestQuery();*/
 
+            //TODO: REFACTOR TO SERVICE
+
             List<Horse> horses = await repository.GetAll();
 
             return Ok(horses);
@@ -29,12 +32,34 @@ namespace Peaky.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id, [FromServices] IHorseRepository repository)
+        public async Task<IActionResult> Get(int id, [FromServices] IHorseService horseService)
         {
 
-            var result = await repository.GetOneById(id);
+            var result = await horseService.ReadById(id);
 
-            return Ok("Hello");
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CreateHorseDTO dto, [FromServices] IHorseService horseService) {
+
+            Horse horse = await horseService.Create(dto);
+
+            if (horse != null) {
+
+                return Ok(horse);
+
+            }
+
+            return BadRequest();
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id) {
+
+            return Ok("NOT IMPLEMENTED");
 
         }
 

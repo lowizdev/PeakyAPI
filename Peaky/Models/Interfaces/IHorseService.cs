@@ -1,4 +1,4 @@
-﻿using Peaky.Models;
+﻿using Peaky.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Peaky.Models.Interfaces
 {
-    public interface IUserRepository: IRepository<User>
+    public interface IHorseService: IAppServiceAsync<Horse, CreateHorseDTO>
     {
-        Task<User> GetOneByEmail(string email);
+
     }
 }

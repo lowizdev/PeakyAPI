@@ -25,7 +25,7 @@ namespace Peaky.Infra.PgSQL
         {
             //throw new NotImplementedException();
 
-            var sql = "SELECT * FROM user WHERE id = @id";
+            var sql = "SELECT * FROM operator WHERE id = @id";
 
             NpgsqlDataReader result;
 
@@ -57,10 +57,51 @@ namespace Peaky.Infra.PgSQL
 
         }
 
+        public async Task<User> GetOneByEmail(string email)
+        {
+            //throw new NotImplementedException();
+
+            var sql = "SELECT * FROM operator WHERE email = @email LIMIT 1";
+
+            NpgsqlDataReader result;
+
+            using (var conn = PgDbConnection.getConnection())
+            {
+
+                await using (var command = conn.CreateCommand())
+                {
+
+                    await conn.OpenAsync();
+
+                    command.CommandText = sql;
+                    command.Parameters.AddWithValue("email", email);
+
+                    result = await command.ExecuteReaderAsync();
+
+                    if (result.Read())
+                    {
+
+                        GenericDOFactoryADO<User> userFactory = new GenericDOFactoryADO<User>();
+
+                        var resultUser = userFactory.Make(result);
+
+                        return resultUser;
+
+                    }
+
+                }
+            }
+
+            return null;
+
+        }
+
         public async Task<int> InsertOne(User element)
         {
 
-            String sql = "INSERT INTO user (name, email, password) VALUES (@name, @email, @password)";
+            //ATTENTION: DATABASE NAME DIFFERS
+
+            String sql = "INSERT INTO operator (name, email, password) VALUES (@name, @email, @password)";
 
             int result = 0;
 
@@ -72,7 +113,7 @@ namespace Peaky.Infra.PgSQL
 
                     command.CommandText = sql;
                     command.Parameters.AddWithValue("name", element.name);
-                    command.Parameters.AddWithValue("email", element.password);
+                    command.Parameters.AddWithValue("email", element.email);
                     command.Parameters.AddWithValue("password", element.password);
 
 
