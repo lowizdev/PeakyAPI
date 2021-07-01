@@ -60,18 +60,30 @@ namespace Peaky.Controllers
 
         }
 
-        //TODO: ADDHORSE
+        [HttpGet("{id}/horses/{horseId}")]
+        public async Task<IActionResult> GetHorse(int id, int horseId, [FromServices] IRaceService raceService, [FromServices] IHorseService horseService)
+        {
+
+            return Ok("NOT IMPLEMENTED");
+
+        }
+
+        //DONETODO: ADDHORSE
         [HttpPost("{id}/horses/")]
-        public async Task<IActionResult> PostHorse(int id, [FromServices] IRaceService raceService, [FromServices] IHorseService horseService)
+        public async Task<IActionResult> PostHorse(int id, [FromBody] AddHorseToRaceDTO horseToRace , [FromServices] IRaceService raceService, [FromServices] IHorseService horseService)
         {
 
             Race race = await raceService.ReadById(id);
 
-            Horse horse = await horseService.ReadById(1); //TODO: FIX THIS, TEST ONLY
+            Horse horse = await horseService.ReadById(horseToRace.HorseId); //TODO: FIX THIS, TEST ONLY
 
-            //var result = await raceService.
+            var result = await raceService.RegisterHorseToRace(race, horse);
 
-            return Ok("");
+            if (result != null) {
+                return Ok(result);
+            }
+
+            return BadRequest();
 
         }
 

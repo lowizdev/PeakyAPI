@@ -64,10 +64,28 @@ namespace Peaky.Services
 
         }
 
-        public async Task<Race> RegisterHorseToRace() {
+        public async Task<Race> RegisterHorseToRace(Race race, Horse horse) {
+
+            var currentHorseQuantityInRace = await this._raceRepository.GetHorseQuantity(race);
+
+            //A SAMPLE BUSINESS RULE
+            if ( currentHorseQuantityInRace < 3 ) { //OTHERS MIGHT GO IN SAME CONDITION
+
+                var resultRace = await this._raceRepository.AddHorse(race, horse);
+
+                return resultRace;
+
+            }
 
             return null;
         
         }
+
+        /*public async Task<int> ReadQuantityOfHorsesInRace(Race race)
+        {
+
+            return await this._raceRepository.GetHorseQuantity(race);
+
+        }*/
     }
 }

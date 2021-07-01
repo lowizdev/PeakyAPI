@@ -66,6 +66,8 @@ namespace Peaky
             services.AddSingleton<IHashing, BCryptHashing>();
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IHorseService, HorseService>();
+            services.AddTransient<IRaceService, RaceService>();
 
             services.AddSwaggerGen(c =>
             {

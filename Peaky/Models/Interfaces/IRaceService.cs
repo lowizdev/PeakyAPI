@@ -9,7 +9,7 @@ namespace Peaky.Models.Interfaces
     public interface IRaceService: IAppServiceAsync<Race, CreateRaceDTO>
     {
 
-        public Task<Race> RegisterHorseToRace();
+        public Task<Race> RegisterHorseToRace(Race race, Horse horse);
 
     }
 }

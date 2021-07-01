@@ -107,12 +107,40 @@ namespace Peaky.Infra.PgSQL
 
         }
 
-        public Task<int> GetHorseQuantity(Race race) {
+        public async Task<int> GetHorseQuantity(Race race) {
 
 
-            String sql = "SELECT COUNT(*) FROM race AS r INNER JOIN horse AS h WHERE r.id = @id";
+            String sql = @"SELECT COUNT(*) AS horsesinrace FROM race AS r INNER JOIN racehorse AS rh ON r.id = rh.race_id
+                WHERE r.id = @id";
 
-            return null;
+            int result = 0;
+
+            using (var conn = PgDbConnection.getConnection()) {
+
+
+                await using (var command = conn.CreateCommand()) {
+
+                    await conn.OpenAsync();
+
+                    command.CommandText = sql;
+
+                    command.Parameters.AddWithValue("id", race.id);
+
+                    var dataReader = await command.ExecuteReaderAsync();
+
+                    if (dataReader.Read()) {
+
+                        result = int.Parse(dataReader["horsesinrace"].ToString());
+
+                        Console.WriteLine(result);
+
+                    }
+
+                }
+
+            }
+
+            return result;
 
         }
     }

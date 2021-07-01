@@ -85,12 +85,12 @@ namespace Peaky.Infra.PgSQL
 
 
 
-                        GenericDOFactoryADO<Horse> teste = new GenericDOFactoryADO<Horse>();
-                        var lookatmyhorse = teste.Make(result);
+                        GenericDOFactoryADO<Horse> horseFactory = new GenericDOFactoryADO<Horse>();
+                        var horseResult = horseFactory.Make(result);
 
-                        Console.WriteLine(lookatmyhorse);
+                        //Console.WriteLine(lookatmyhorse);
 
-                        return new Horse();
+                        return horseResult; //new Horse();
 
                     }
                     

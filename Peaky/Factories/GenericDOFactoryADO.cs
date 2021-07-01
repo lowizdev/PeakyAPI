@@ -19,9 +19,15 @@ namespace Peaky.Factories
             
             foreach (PropertyInfo prop in element.GetType().GetProperties()) {
 
-                //var temp = prop.Name;
-                //Console.WriteLine(temp);
-                prop.SetValue(element, reader[prop.Name], null);
+                /*var temp = prop.GetType();
+                var temp2 = reader[prop.Name].GetType();
+                Console.WriteLine(temp2);*/
+
+                if (reader[prop.Name].GetType().Name.ToString() != "DBNull") //NULL DOESNT MATCH WELL, SO LEAVE IT ALONE FOR NOW
+                {
+
+                    prop.SetValue(element, reader[prop.Name], null);
+                }
             
             }
 
