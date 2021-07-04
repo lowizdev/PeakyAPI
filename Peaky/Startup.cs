@@ -18,6 +18,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Peaky.Infra.Security;
 using Peaky.Services;
+using FluentValidation;
+using Peaky.Models.DTOs;
+using Peaky.Services.Validators;
 
 namespace Peaky
 {
@@ -68,6 +71,11 @@ namespace Peaky
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IHorseService, HorseService>();
             services.AddTransient<IRaceService, RaceService>();
+
+            services.AddScoped<IValidator<CreateUserDTO>, CreateUserValidator>();
+            services.AddScoped<IValidator<CreateRaceDTO>, CreateRaceValidator>();
+            services.AddScoped<IValidator<CreateHorseDTO>, CreateHorseValidator>();
+
 
             services.AddSwaggerGen(c =>
             {

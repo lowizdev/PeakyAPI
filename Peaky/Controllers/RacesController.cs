@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Peaky.Models;
 using Peaky.Models.DTOs;
@@ -37,8 +39,16 @@ namespace Peaky.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateRaceDTO dto, [FromServices] IRaceService raceService)
+        public async Task<IActionResult> Post([FromBody] CreateRaceDTO dto, [FromServices] IRaceService raceService, [FromServices] IValidator<CreateRaceDTO> validator)
         {
+
+            ValidationResult validationResults = validator.Validate(dto);
+
+            if (!validationResults.IsValid) {
+
+                return BadRequest(validationResults.Errors);
+
+            }
 
             Race race = await raceService.Create(dto);
 
@@ -70,8 +80,18 @@ namespace Peaky.Controllers
 
         //DONETODO: ADDHORSE
         [HttpPost("{id}/horses/")]
-        public async Task<IActionResult> PostHorse(int id, [FromBody] AddHorseToRaceDTO horseToRace , [FromServices] IRaceService raceService, [FromServices] IHorseService horseService)
+        public async Task<IActionResult> PostHorse(int id, [FromBody] AddHorseToRaceDTO horseToRace , [FromServices] IRaceService raceService, [FromServices] IHorseService horseService, [FromServices] IValidator<AddHorseToRaceDTO> validator)
         {
+
+            /*ValidationResult validationResults = validator.Validate(dto);
+
+            if (!validationResults.IsValid)
+            {
+
+                return BadRequest(validationResults.Errors);
+
+            }*/ //TODO: RETHINK THIS FUNCTIONALITY
+
 
             Race race = await raceService.ReadById(id);
 

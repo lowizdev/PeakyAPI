@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Peaky.Models.DTOs;
 using Peaky.Models.Interfaces;
@@ -15,7 +17,16 @@ namespace Peaky.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateUserDTO dto, [FromServices] IUserService userService) {
+        public async Task<IActionResult> Post([FromBody] CreateUserDTO dto, [FromServices] IUserService userService, [FromServices] IValidator<CreateUserDTO> validator) {
+
+
+            ValidationResult validationResults = validator.Validate(dto);
+
+            if (!validationResults.IsValid) {
+
+                return BadRequest(validationResults.Errors);
+
+            }
 
             var user = await userService.Create(dto);
 

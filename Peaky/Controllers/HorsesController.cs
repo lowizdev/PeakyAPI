@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Peaky.Models;
 using Peaky.Models.DTOs;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace Peaky.Controllers
 {
@@ -42,7 +44,15 @@ namespace Peaky.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateHorseDTO dto, [FromServices] IHorseService horseService) {
+        public async Task<IActionResult> Post([FromBody] CreateHorseDTO dto, [FromServices] IHorseService horseService, [FromServices] IValidator<CreateHorseDTO> validator) {
+
+            ValidationResult validationResults = validator.Validate(dto);
+
+            if (!validationResults.IsValid) {
+
+                return BadRequest(validationResults.Errors);
+
+            }
 
             Horse horse = await horseService.Create(dto);
 
@@ -52,7 +62,7 @@ namespace Peaky.Controllers
 
             }
 
-            return BadRequest();
+            return BadRequest("Unable to register horse");
 
         }
 
