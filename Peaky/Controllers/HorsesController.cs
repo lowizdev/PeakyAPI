@@ -19,7 +19,7 @@ namespace Peaky.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromServices] IHorseRepository repository) {
+        public async Task<IActionResult> GetAll([FromServices] IHorseService horseService) {
 
             /*HorseRepository hr1 = new HorseRepository();
 
@@ -27,7 +27,7 @@ namespace Peaky.Controllers
 
             //TODO: REFACTOR TO SERVICE
 
-            List<Horse> horses = await repository.GetAll();
+            List<Horse> horses = await horseService.ReadAll();
 
             return Ok(horses);
 

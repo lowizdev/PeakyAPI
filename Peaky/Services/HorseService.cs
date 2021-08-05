@@ -39,9 +39,9 @@ namespace Peaky.Services
             throw new NotImplementedException();
         }
 
-        public Task<Horse> ReadAll()
+        public async Task<List<Horse>> ReadAll()
         {
-            throw new NotImplementedException();
+            return await this._repository.GetAll();
         }
 
         public async Task<Horse> ReadById(int id)

@@ -51,7 +51,7 @@ namespace Peaky.Services
             throw new NotImplementedException();
         }
 
-        public Task<Race> ReadAll()
+        public Task<List<Race>> ReadAll()
         {
             throw new NotImplementedException();
         }

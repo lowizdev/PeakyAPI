@@ -11,6 +11,7 @@ namespace Peaky.Infra.PgSQL
 {
     public class UserRepository : IUserRepository
     {
+        //TODO: REFACTOR TO DAPPER BUT KEEP THIS IMPLEMENTATION
         public Task<bool> DeleteOneById(int id)
         {
             throw new NotImplementedException();

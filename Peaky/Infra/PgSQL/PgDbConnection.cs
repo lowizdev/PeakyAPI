@@ -1,15 +1,35 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Peaky.Infra.PgSQL
 {
-    public class PgDbConnection
+
+    public interface IPeakyDBConnection {
+
+        public IDbConnection GetConnection();
+
+    }
+
+    public class PgDbConnection: IPeakyDBConnection
     {
         //TODO REFACTOR
-        public static NpgsqlConnection getConnection() {
+        public IDbConnection GetConnection() {
+
+            var connString = "";
+
+            //await using var conn = new NpgsqlConnection(connString);
+
+            return new NpgsqlConnection(connString);
+
+        }
+
+        //TODO: REPLACE
+        public static NpgsqlConnection getConnection()
+        {
 
             var connString = "";
 

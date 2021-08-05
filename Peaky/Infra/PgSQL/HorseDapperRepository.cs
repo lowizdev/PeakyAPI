@@ -11,14 +11,25 @@ namespace Peaky.Infra.PgSQL
 {
     public class HorseDapperRepository : IHorseRepository
     {
+        private DBSession _session = null;
+        public HorseDapperRepository(DBSession session)
+        {
+            this._session = session;
+        }
         public Task<bool> DeleteOneById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Horse>> GetAll()
+        public async Task<List<Horse>> GetAll()
         {
-            throw new NotImplementedException();
+            String sql = "SELECT * FROM horse";
+
+            List<Horse> result = null;
+
+            result = (await this._session.connection.QueryAsync<Horse>(sql)).ToList();
+
+            return result;
         }
 
         public async Task<Horse> GetOneById(int id)

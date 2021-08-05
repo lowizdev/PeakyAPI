@@ -62,7 +62,11 @@ namespace Peaky
 
             });
 
-            services.AddTransient<IHorseRepository, HorseRepository>();
+            services.AddScoped<IPeakyDBConnection, PgDbConnection>();
+            services.AddScoped<DBSession>();
+            services.AddTransient<IUnitOfWork, UnityOfWork>();
+
+            services.AddTransient<IHorseRepository, HorseDapperRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRaceRepository, RaceRepository>();
 

@@ -10,7 +10,7 @@ namespace Peaky.Models.Interfaces
 
         Task<T> Create(K element);
         Task<T> ReadById(int id);
-        Task<T> ReadAll();
+        Task<List<T>> ReadAll();
         Task<bool> DeleteById(int id);
 
     }
