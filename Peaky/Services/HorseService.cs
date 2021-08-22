@@ -1,4 +1,5 @@
-﻿using Peaky.Models;
+﻿using Peaky.Infra.PgSQL;
+using Peaky.Models;
 using Peaky.Models.DTOs;
 using Peaky.Models.Interfaces;
 using System;
@@ -12,10 +13,12 @@ namespace Peaky.Services
     {
 
         private IHorseRepository _repository = null;
+        private IUnitOfWork _unitOfWork = null;
 
-        public HorseService(IHorseRepository repository)
+        public HorseService(IHorseRepository repository, IUnitOfWork unitOfWork)
         {
             this._repository = repository;
+            this._unitOfWork = unitOfWork;
         }
 
         public async Task<Horse> Create(CreateHorseDTO element)
@@ -47,7 +50,11 @@ namespace Peaky.Services
         public async Task<Horse> ReadById(int id)
         {
 
+            this._unitOfWork.BeginTransaction(); //DEMONSTRATION ONLY
+
             Horse horse = await this._repository.GetOneById(id);
+
+            this._unitOfWork.Commit();
 
             return horse;
 

@@ -19,11 +19,14 @@ namespace Peaky.Infra.PgSQL
         //TODO REFACTOR
         public IDbConnection GetConnection() {
 
-            var connString = "";
+            var connString = ""; ;
 
             //await using var conn = new NpgsqlConnection(connString);
 
-            return new NpgsqlConnection(connString);
+            NpgsqlConnection connection = new NpgsqlConnection(connString);
+            connection.Open();
+
+            return connection;
 
         }
 

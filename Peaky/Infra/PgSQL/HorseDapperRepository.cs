@@ -29,10 +29,12 @@ namespace Peaky.Infra.PgSQL
 
             result = (await this._session.connection.QueryAsync<Horse>(sql)).ToList();
 
+            //TODO: APPLY UOW
+
             return result;
         }
 
-        public async Task<Horse> GetOneById(int id)
+        /*public async Task<Horse> GetOneById(int id)
         {
             String sql = "SELECT * FROM horse WHERE id = @id";
 
@@ -52,11 +54,28 @@ namespace Peaky.Infra.PgSQL
             }
 
             return null;
+        }*/
+
+        public async Task<Horse> GetOneById(int id)
+        {
+            String sql = "SELECT * FROM horse WHERE id = @id";
+
+            var horse = await this._session.connection.QueryFirstOrDefaultAsync<Horse>(sql, new { id = id });
+
+            if (horse != null)
+            {
+
+                return horse;
+
+            }
+
+            return null;
         }
 
-        public Task<int> InsertOne(Horse element)
+        public async Task<int> InsertOne(Horse element)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return 1;
         }
     }
 }
