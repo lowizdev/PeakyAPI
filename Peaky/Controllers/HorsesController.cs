@@ -10,6 +10,7 @@ using Peaky.Models;
 using Peaky.Models.DTOs;
 using FluentValidation;
 using FluentValidation.Results;
+using Peaky.Infra.Mongo;
 
 namespace Peaky.Controllers
 {
@@ -28,6 +29,27 @@ namespace Peaky.Controllers
             //TODO: REFACTOR TO SERVICE
 
             List<Horse> horses = await horseService.ReadAll();
+
+            return Ok(horses);
+
+        }
+
+       [HttpGet("/mongo")]
+        public async Task<IActionResult> GetAllMongo()
+        {
+
+
+
+            var conn = new SampleConnection();
+
+            List<Horse> horses = conn.Get();
+
+            Horse h1 = new Horse();
+
+            h1.name = "Test Horse from API";
+            h1.age = 11;
+
+            //conn.InsertOne(h1);
 
             return Ok(horses);
 
