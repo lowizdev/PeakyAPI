@@ -21,6 +21,10 @@ using Peaky.Services;
 using FluentValidation;
 using Peaky.Models.DTOs;
 using Peaky.Services.Validators;
+using Peaky.Infra.Mongo.Maps;
+using MongoDB.Driver;
+using Peaky.Models;
+using Peaky.Infra.Mongo;
 
 namespace Peaky
 {
@@ -66,6 +70,8 @@ namespace Peaky
             services.AddScoped<DBSession>();
             services.AddTransient<IUnitOfWork, UnityOfWork>();
 
+            services.AddScoped<IMongoRepository<Horse>, GenericMongoRepository<Horse>>();
+
             services.AddTransient<IHorseRepository, HorseDapperRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRaceRepository, RaceRepository>();
@@ -79,6 +85,8 @@ namespace Peaky
             services.AddScoped<IValidator<CreateUserDTO>, CreateUserValidator>();
             services.AddScoped<IValidator<CreateRaceDTO>, CreateRaceValidator>();
             services.AddScoped<IValidator<CreateHorseDTO>, CreateHorseValidator>();
+
+            HorseMongoMap.Map();
 
 
             services.AddSwaggerGen(c =>

@@ -34,20 +34,20 @@ namespace Peaky.Controllers
 
         }
 
-       [HttpGet("/mongo")]
-        public async Task<IActionResult> GetAllMongo()
+        [HttpGet("mongo")]
+        public async Task<IActionResult> GetAllMongo([FromServices] IMongoRepository<Horse> mongoRepository)
         {
 
 
 
-            var conn = new SampleConnection();
+            //var conn = new SampleConnection();
 
-            List<Horse> horses = conn.Get();
+            List<Horse> horses = await mongoRepository.GetAll();
 
-            Horse h1 = new Horse();
+            //Horse h1 = new Horse();
 
-            h1.name = "Test Horse from API";
-            h1.age = 11;
+            //h1.name = "Test Horse from API";
+            //h1.age = 11;
 
             //conn.InsertOne(h1);
 
